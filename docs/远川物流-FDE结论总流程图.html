@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>远川物流 · 仓内拣选与装车核验｜FDE 结论总流程图</title>
+<style>
+  :root{
+    --surface:#FFFFFF;
+    --surface-muted:#F7F7F8;
+    --text:#171717;
+    --text-muted:#52525B;
+    --border:rgba(23,23,23,.14);
+    --brand:#0AB861;
+    --brand-soft:#E5FFF2;
+    --brand-text:#004D26;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    padding:40px 24px 64px;
+    background:var(--surface-muted);
+    color:var(--text);
+    font:14px/20px "Microsoft YaHei","PingFang SC",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .page{max-width:1200px;margin:0 auto}
+  header{margin-bottom:28px}
+  h1{
+    margin:0 0 8px;
+    font-size:24px;
+    line-height:34px;
+    font-weight:600;
+    letter-spacing:0;
+  }
+  .meta{margin:0;color:var(--text-muted);font-size:13px;line-height:20px}
+  .meta span+span::before{content:"·";margin:0 8px;color:var(--border)}
+  .canvas{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:24px 24px 8px;
+  }
+  svg{display:block;width:100%;height:auto}
+  .phase{fill:#52525B;font:500 14px/20px "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+  .chip{fill:#171717;font:500 14px/20px "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+  .t{fill:#171717;font:500 16px/24px "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+  .c{fill:#52525B;font:400 13px/20px "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+  .bt{fill:#004D26;font:500 16px/24px "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+  .bc{fill:#004D26;font:400 13px/20px "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+  .arr{fill:none;stroke:#8A8A93;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .box{fill:#FFFFFF;stroke:rgba(23,23,23,.14)}
+  .box-muted{fill:#F7F7F8;stroke:rgba(23,23,23,.14)}
+  .box-brand{fill:#E5FFF2;stroke:#0AB861}
+  .band{fill:#FAFAFA;stroke:rgba(23,23,23,.12);stroke-dasharray:5 5}
+  footer{
+    margin-top:24px;
+    padding:20px 24px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    color:var(--text-muted);
+    font-size:13px;
+    line-height:22px;
+  }
+  footer strong{color:var(--text);font-weight:600}
+  footer .row+.row{margin-top:8px}
+  @media print{
+    body{background:#fff;padding:0}
+    .page{max-width:none}
+    .canvas,footer{border:none;padding:0}
+    svg{page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>远川物流 · 仓内拣选与装车核验｜FDE 结论总流程图</h1>
+    <p class="meta">
+      <span>证据来源：六角色访谈 f00–f55（顾明岚 / 林亦舟 / 唐映秋 / 秦芮 / 傅景 / 叶书）</span>
+      <span>合成训练场景</span>
+      <span>2026-11</span>
+    </p>
+  </header>
+
+  <div class="canvas">
+    <svg viewBox="0 0 1200 1804" role="img" aria-label="远川物流仓内拣选与装车核验 FDE 结论总流程图">
+      <defs>
+        <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M1 1 L7 4 L1 7 Z" fill="#8A8A93"></path>
+        </marker>
+      </defs>
+
+      <!-- 一、现状 -->
+      <rect class="band" x="80" y="40" width="1040" height="400" rx="12"></rect>
+      <text class="phase" x="100" y="70">一 · 现状：六节点主流程与两处失效点</text>
+
+      <rect class="box" x="140" y="88" width="132" height="44" rx="8"></rect>
+      <text class="chip" x="206" y="116" text-anchor="middle">订单归集</text>
+      <rect class="box" x="297" y="88" width="132" height="44" rx="8"></rect>
+      <text class="chip" x="363" y="116" text-anchor="middle">波次分配</text>
+      <rect class="box-muted" x="454" y="88" width="132" height="44" rx="8"></rect>
+      <text class="chip" x="520" y="116" text-anchor="middle">拣选 ①</text>
+      <rect class="box" x="611" y="88" width="132" height="44" rx="8"></rect>
+      <text class="chip" x="677" y="116" text-anchor="middle">复核</text>
+      <rect class="box" x="768" y="88" width="132" height="44" rx="8"></rect>
+      <text class="chip" x="834" y="116" text-anchor="middle">集货</text>
+      <rect class="box-muted" x="925" y="88" width="132" height="44" rx="8"></rect>
+      <text class="chip" x="991" y="116" text-anchor="middle">装车扫码 ②</text>
+
+      <path class="arr" d="M272 110 H293" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M429 110 H450" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M586 110 H607" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M743 110 H764" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M900 110 H921" marker-end="url(#arrow)"></path>
+
+      <rect class="box-muted" x="140" y="156" width="448" height="112" rx="8"></rect>
+      <text class="t" x="160" y="188">① 拣选：相似包装相邻货位</text>
+      <text class="c" x="160" y="212">新员工错拿规格，拿不准就停下再核，节奏一断整线受影响</text>
+      <text class="c" x="160" y="234">关键说明留在便签/群消息，不随单据交接（f10 / f14）</text>
+      <text class="c" x="160" y="256">重复复核约 14 人时/日，为复核总量而非可节省量（估计 f12）</text>
+
+      <rect class="box-muted" x="612" y="156" width="448" height="112" rx="8"></rect>
+      <text class="t" x="632" y="188">② 装车：取消状态未生效</text>
+      <text class="c" x="632" y="212">OMS 取消事件到装车侧延迟 12 分钟（事实 f31）</text>
+      <text class="c" x="632" y="234">拣完仍被装车，配送站到货才发现（f11）</text>
+      <text class="c" x="632" y="256">转人工无具名接手人、无闭环时限（f44）</text>
+
+      <path class="arr" d="M520 132 V144 H364 V152" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M991 132 V144 H836 V152" marker-end="url(#arrow)"></path>
+
+      <rect class="box" x="140" y="296" width="920" height="76" rx="8"></rect>
+      <text class="t" x="160" y="326">后果：错误在仓内产生，在客户端结算</text>
+      <text class="c" x="160" y="350">到货由配送站向客户解释；出库与正确收货两套完成口径并行，同一业务可被拆成多次「成功」（f50 / f53）</text>
+
+      <path class="arr" d="M364 268 V292" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M836 268 V292" marker-end="url(#arrow)"></path>
+
+      <!-- 一 → 二 -->
+      <path class="arr" d="M600 372 V524" marker-end="url(#arrow)"></path>
+      <rect class="box" x="612" y="388" width="196" height="28" rx="8"></rect>
+      <text class="c" x="710" y="407" text-anchor="middle">归纳为 6 条候选需求</text>
+
+      <!-- 二、判断 -->
+      <rect class="band" x="80" y="480" width="1040" height="600" rx="12"></rect>
+      <text class="phase" x="100" y="510">二 · 判断：证据门槛与切入点选择</text>
+
+      <rect class="box" x="140" y="528" width="920" height="72" rx="8"></rect>
+      <text class="t" x="160" y="556">REQ-1 ~ REQ-6：六条候选需求，全部标注为待验证假设</text>
+      <text class="c" x="160" y="580">P0/P1 只是排序，不等于已完成价值与风险评分</text>
+
+      <rect class="box" x="140" y="628" width="920" height="72" rx="8"></rect>
+      <text class="t" x="160" y="656">筛选：能否在损害发生前拦截，且失败可撤销？</text>
+      <text class="c" x="160" y="680">高价值 · 可拦截 · 可恢复 · 失败看得见</text>
+
+      <rect class="box-muted" x="140" y="728" width="448" height="104" rx="8"></rect>
+      <text class="t" x="160" y="758">O1 拣选防错提示</text>
+      <text class="c" x="160" y="782">可拦截 · 可撤销 · 装车前拦得住</text>
+      <text class="c" x="160" y="804">价值待分解：拣选与装车贡献占比未测（f20 访谈无按环节统计）</text>
+
+      <rect class="box-muted" x="612" y="728" width="448" height="104" rx="8"></rect>
+      <text class="t" x="632" y="758">O2 取消单拦截点</text>
+      <text class="c" x="632" y="782">可拦截 · 12 分钟同步延迟是硬约束</text>
+      <text class="c" x="632" y="804">提示或阻断？阻断需顾明岚与傅景批准（f34）</text>
+
+      <rect class="box" x="140" y="860" width="920" height="76" rx="8"></rect>
+      <text class="t" x="160" y="890">门槛：口径 · 因果 · 基线，三项是否齐备？</text>
+      <text class="c" x="160" y="914">分母与统计周期 · 拣选/装车贡献拆分 · 六节点计时；任一缺失即不立项</text>
+
+      <rect class="box" x="140" y="964" width="448" height="84" rx="8"></rect>
+      <text class="t" x="160" y="996">未过 → 暂缓上功能</text>
+      <text class="c" x="160" y="1020">补口径与基线后重跑门槛，不锁技术路线与供应商</text>
+
+      <rect class="box" x="612" y="964" width="448" height="84" rx="8"></rect>
+      <text class="t" x="632" y="996">已过 → 进入 G0 闸门</text>
+      <text class="c" x="632" y="1020">单仓区并行试点，不替换现有流程（f05）</text>
+
+      <path class="arr" d="M600 600 V624" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M600 700 V712 H364 V724" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M600 700 V712 H836 V724" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M364 832 V844 H600 V856" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M836 832 V844 H600 V856" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M600 936 V948 H364 V960" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M600 936 V948 H836 V960" marker-end="url(#arrow)"></path>
+
+      <!-- 二 → 三 -->
+      <path class="arr" d="M836 1048 V1100 H600 V1164" marker-end="url(#arrow)"></path>
+
+      <!-- 三、路径 -->
+      <rect class="band" x="80" y="1120" width="1040" height="644" rx="12"></rect>
+      <text class="phase" x="100" y="1150">三 · 路径：六个闸门、验收硬线与停止条件</text>
+
+      <rect class="box" x="140" y="1168" width="920" height="92" rx="8"></rect>
+      <text class="t" x="160" y="1198">G0 需求确认 · 顾明岚批准</text>
+      <text class="c" x="160" y="1222">交付：6 条候选需求 + 六角色证据台账（f00–f55，标来源、版本、样本时间窗）</text>
+      <text class="c" x="160" y="1242">通过 = 每条机会都有验证路径与待核实问题；主责人一律标注为「建议牵头」</text>
+
+      <rect class="box-brand" x="140" y="1284" width="920" height="92" rx="8"></rect>
+      <text class="bt" x="160" y="1314">G1 口径冻结 + G2 数据与审批 · 上线阻断项</text>
+      <text class="bc" x="160" y="1338">O5 错发率/漏扫：分母 · 排除规则 · 统计周期 · 出数人签字，用试点前一个月数据回算</text>
+      <text class="bc" x="160" y="1358">O3 主编号映射与可自动关联比例 + O6 审批矩阵、兜底三要素；未成文即阻断</text>
+
+      <rect class="box" x="140" y="1400" width="920" height="92" rx="8"></rect>
+      <text class="t" x="160" y="1430">G3 历史回放 + G4 单仓区并行</text>
+      <text class="c" x="160" y="1454">O1 / O2 已知错例命中率与误判率、取消单拦截覆盖率、12 分钟窗口残留率</text>
+      <text class="c" x="160" y="1474">O4 六节点计时两周定基线；回放先行，不替换原流程，原流程照常运行</text>
+
+      <rect class="box" x="140" y="1516" width="920" height="92" rx="8"></rect>
+      <text class="t" x="160" y="1546">G5 验收：两条硬线同时成立</text>
+      <text class="c" x="160" y="1570">错发率下降（口径已冻结）+ 复核漏扫为零（判定规则已成文）</text>
+      <text class="c" x="160" y="1590">+ 高位叉车 / 危险品 / 冷链规程未放宽；兜底记录三要素齐全（f42 / f40）</text>
+
+      <rect class="box" x="140" y="1632" width="920" height="92" rx="8"></rect>
+      <text class="t" x="160" y="1662">G6 复盘：先复测，再更新规则版本</text>
+      <text class="c" x="160" y="1686">每周收集拣货员、波次计划员、配送站长的误判例子与未解决问题</text>
+      <text class="c" x="160" y="1706">触及停止条件即暂停并由负责人复盘；改进负责人由顾明岚确认（f55）</text>
+
+      <path class="arr" d="M600 1260 V1280" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M600 1376 V1396" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M600 1492 V1512" marker-end="url(#arrow)"></path>
+      <path class="arr" d="M600 1608 V1628" marker-end="url(#arrow)"></path>
+    </svg>
+  </div>
+
+  <footer>
+    <div class="row"><strong>读图顺序：</strong>现状（六节点 + 两处失效）→ 判断（6 条候选 → 2 个可拦截点 → 三项门槛）→ 路径（G0–G6，绿色为唯一上线阻断项）。</div>
+    <div class="row"><strong>证据分级：</strong>事实级（12 分钟同步延迟、每日两次状态更新、22 万预算、90 天留存、编码不一致、三系统账号独立）可直接引用；估计级（1.8%→0.5%、35→20 分钟、7000 行/日、14 人时/日）缺分母与周期，不得进验收；推算级（约 91 行/日、1.3 万行/月）仅说明量级；待定级（漏扫定义、节点耗时构成、主编号可关联比例、交接完成率）须先采集。</div>
+    <div class="row"><strong>边界声明：</strong>本图为合成训练场景的分析结论，不代表真实授权、业务执行或客户验收；只做扫码解释与错配提醒，不自动操作叉车、不做盘盈盘亏；正式立项前需重新取得访谈引用授权、脱敏范围与历史回放调取授权。</div>
+  </footer>
+</div>
+</body>
+</html>
