@@ -87,3 +87,41 @@
 - 完整合规报告：[`docs/license/开源许可证合规核对报告.md`](./docs/license/开源许可证合规核对报告.md) ／ [DOCX 版](./docs/license/开源许可证合规核对报告.docx)
 
 **重要声明**：迁入内容不改变上游许可证状态。上游仓库未附项目级 LICENSE，源码多处标注华为版权与 All rights reserved，`cmake/util/makeself/` 为 GPL-2.0 第三方组件。本仓库仅作课程归档，**不构成对这些代码的再许可**；对外分发前须按报告中的待办补齐授权与声明。
+
+## 系统代码（fde-agent）
+
+`fde-agent/` 是实现远川物流仓内拣选与装车核验场景的完整工程：Harness 执行骨架、四维知识库、分层记忆、项目 Wiki（用户/管理员双模式）、多 agent、编排状态机、人工闸门、现场执行层与零构建控制台。
+
+**技术栈**：Python 3.11+ / FastAPI / Pydantic v2 / pytest；前端为原生 HTML+CSS+JS，无构建步骤。
+
+**本地运行**
+
+```bash
+cd fde-agent
+pip install -r requirements.txt
+uvicorn app.main:app --port 8000     # 控制台 http://127.0.0.1:8000/ui/
+pytest -q                            # 75 项单元测试
+python scripts/verify_p0.py          # 逐阶段验收脚本 p0…p8
+```
+
+**目录职责**
+
+| 路径 | 内容 |
+|---|---|
+| `app/harness/` | 契约、执行器、闸门、追踪、回放、故障注入 |
+| `app/knowledge/` | 台账解析、切分、BM25 索引与检索 |
+| `app/memory/` | 四层记忆、写入策略、环境画像、Mem0 适配器 |
+| `app/wiki/` | 页面/版本/审计、双模式服务 |
+| `app/agents/` | A1 证据抽取、A2 冲突检测、A3 口径基线、A4 方案生成、A5 独立核验 |
+| `app/orchestrator/` | 任务状态机、幂等复用、断点续跑、人工闸门 |
+| `app/execution/` | 现场规则引擎、事件溯源、处置闭环、CSV 导入与回放评估 |
+| `app/web/` | 零构建控制台（概览 / 任务编排 / Wiki / 记忆审计 / 现场执行） |
+| `data/sample/` | 合成样例 CSV（**非真实数据**） |
+| `scripts/` | 入库、验收、评估门禁、压测、故障演练、回放 |
+| `tests/` | 75 项单元测试 |
+
+**数据与边界**
+
+- 全部数据为合成样例，不接真实 WMS/OMS/扫码终端；`var/` 运行时目录不纳入版本库。
+- 角色通过请求头 `X-Role` 传递，仅用于演示，生产须由网关注入。
+- 现场规则（R1–R4）尚未经真实历史数据验证，回放评估台的样例结果为精确率 0.50 / 召回率 0.80，不可作为业务结论。

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FDE Agent Console</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="nav">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>FDE Console</span>
+    </div>
+    <button class="nav-item active" data-view="overview">概览</button>
+    <button class="nav-item" data-view="tasks">任务编排</button>
+    <button class="nav-item" data-view="wiki">知识 Wiki</button>
+    <button class="nav-item" data-view="memory">记忆与审计</button>
+    <button class="nav-item" data-view="exec">现场执行</button>
+    <div class="nav-foot">
+      <a href="/docs" target="_blank" rel="noreferrer">API 文档</a>
+    </div>
+  </aside>
+
+  <section class="main">
+    <header class="topbar">
+      <div class="crumbs" id="crumbs">概览</div>
+      <div class="controls">
+        <label class="field">
+          <span>角色</span>
+          <select id="role">
+            <option value="viewer">viewer</option>
+            <option value="operator">operator</option>
+            <option value="engineer" selected>engineer</option>
+            <option value="safety">safety</option>
+            <option value="admin">admin</option>
+          </select>
+        </label>
+        <span class="status" id="status">连接中…</span>
+      </div>
+    </header>
+
+    <div class="view" id="view-overview">
+      <div class="grid cards">
+        <article class="card"><h3>服务状态</h3><p class="metric" id="m-health">—</p><p class="hint" id="m-env">—</p></article>
+        <article class="card"><h3>知识库事实</h3><p class="metric" id="m-facts">—</p><p class="hint" id="m-dims">—</p></article>
+        <article class="card"><h3>记忆条目</h3><p class="metric" id="m-mem">—</p><p class="hint" id="m-conflict">—</p></article>
+        <article class="card"><h3>Wiki 页面</h3><p class="metric" id="m-wiki">—</p><p class="hint">用户模式仅显示已发布</p></article>
+      </div>
+      <article class="card">
+        <h3>快速说明</h3>
+        <p class="hint">1) 在「任务编排」新建任务并执行四步，状态停在待签核；2) 用 safety 或 admin 角色签核；3) 「知识 Wiki」管理员模式可创建、发布、回滚。</p>
+        <p class="hint">所有接口返回统一结构 {ok,data,error}；角色通过请求头 X-Role 传递，仅用于演示，生产需由网关注入。</p>
+      </article>
+    </div>
+
+    <div class="view hidden" id="view-tasks">
+      <article class="card">
+        <div class="row">
+          <h3>任务编排</h3>
+          <div class="row-actions">
+            <button class="btn primary" id="btn-create">新建任务</button>
+            <button class="btn" id="btn-run">执行四步</button>
+            <button class="btn" id="btn-refresh">刷新</button>
+          </div>
+        </div>
+        <p class="hint">状态机：created → conflicts_ready → baseline_ready → design_ready → verified → awaiting_gate → approved / rejected</p>
+        <div class="kv" id="task-meta">尚未创建任务</div>
+        <div class="steps" id="task-steps"></div>
+      </article>
+
+      <article class="card" id="task-design" hidden>
+        <h3>方案摘要</h3>
+        <p class="lead" id="d-scope"></p>
+        <div class="cols">
+          <div><h4>规则</h4><ul id="d-rules" class="list"></ul></div>
+          <div><h4>验收</h4><ul id="d-accept" class="list"></ul></div>
+          <div><h4>边界</h4><ul id="d-boundary" class="list"></ul></div>
+        </div>
+        <h4>待核实问题</h4><ul id="d-questions" class="list"></ul>
+      </article>
+
+      <article class="card" id="task-gate" hidden>
+        <h3>人工签核</h3>
+        <p class="hint" id="g-reason"></p>
+        <div class="row">
+          <input id="g-note" class="input" placeholder="签核说明（可选）">
+          <button class="btn primary" id="btn-approve">批准</button>
+          <button class="btn danger" id="btn-reject">驳回</button>
+        </div>
+        <p class="hint" id="g-result"></p>
+      </article>
+    </div>
+
+    <div class="view hidden" id="view-wiki">
+      <article class="card">
+        <div class="row">
+          <h3>知识 Wiki</h3>
+          <div class="seg" id="wiki-mode">
+            <button class="seg-item active" data-mode="user">用户模式</button>
+            <button class="seg-item" data-mode="admin">管理员模式</button>
+          </div>
+        </div>
+        <p class="hint" id="wiki-hint">用户模式只读已发布且当前角色可见的页面。</p>
+        <div class="split">
+          <ul class="list pages" id="wiki-list"></ul>
+          <div class="detail" id="wiki-detail"><p class="hint">选择左侧页面查看正文。</p></div>
+        </div>
+      </article>
+
+      <article class="card" id="wiki-editor" hidden>
+        <h3>新建草稿（管理员模式）</h3>
+        <div class="form">
+          <label class="field"><span>slug</span><input id="w-slug" class="input" placeholder="cancel-order-rule"></label>
+          <label class="field"><span>标题</span><input id="w-title" class="input" placeholder="取消单拦截说明"></label>
+          <label class="field"><span>事实编号（逗号分隔）</span><input id="w-refs" class="input" placeholder="f11,f31"></label>
+          <label class="field"><span>维度</span><select id="w-dim"><option value="fact">fact</option><option value="rule">rule</option><option value="indicator">indicator</option><option value="case">case</option></select></label>
+          <label class="field wide"><span>正文</span><textarea id="w-body" rows="4" placeholder="装车前核对取消状态；提示不覆盖原记录。"></textarea></label>
+        </div>
+        <button class="btn primary" id="btn-wiki-save">保存草稿</button>
+        <p class="hint" id="w-result"></p>
+      </article>
+    </div>
+
+    <div class="view hidden" id="view-memory">
+      <article class="card">
+        <div class="row"><h3>记忆</h3><button class="btn" id="btn-mem-stats">刷新统计</button></div>
+        <p class="kv" id="mem-stats">—</p>
+        <div class="form">
+          <label class="field"><span>层</span><select id="mem-layer"><option value="working">working</option><option value="episodic">episodic</option><option value="semantic">semantic</option><option value="procedural">procedural</option></select></label>
+          <label class="field wide"><span>正文</span><input id="mem-text" class="input" placeholder="错发主因在拣选"></label>
+          <label class="field"><span>事实编号</span><input id="mem-refs" class="input" placeholder="f10"></label>
+          <label class="field"><span>已核验</span><select id="mem-verified"><option value="false">否</option><option value="true">是</option></select></label>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="btn-mem-write">写入</button>
+          <input id="mem-query" class="input" placeholder="检索关键词">
+          <button class="btn" id="btn-mem-search">检索</button>
+        </div>
+        <p class="hint" id="mem-result"></p>
+        <ul class="list" id="mem-hits"></ul>
+      </article>
+
+      <article class="card">
+        <div class="row"><h3>Wiki 审计</h3><button class="btn" id="btn-audit">加载审计</button></div>
+        <table class="table"><thead><tr><th>时间</th><th>动作</th><th>页面</th><th>角色</th><th>版本</th></tr></thead><tbody id="audit-body"></tbody></table>
+      </article>
+    </div>
+    <div class="view hidden" id="view-exec">
+      <div class="grid cards">
+        <article class="card"><h3>判定次数</h3><p class="metric" id="x-scans">—</p><p class="hint" id="x-rules">—</p></article>
+        <article class="card"><h3>提示 / 挂起</h3><p class="metric" id="x-levels">—</p><p class="hint">提示不阻断，挂起必须人工处置</p></article>
+        <article class="card"><h3>未闭环挂起</h3><p class="metric" id="x-unresolved">—</p><p class="hint" id="x-overdue">超时 0</p></article>
+        <article class="card"><h3>闭环率</h3><p class="metric" id="x-closure">—</p><p class="hint">挂起处置完成比例</p></article>
+      </div>
+
+      <article class="card">
+        <div class="row"><h3>终端模拟</h3><button class="btn" id="btn-x-metrics">刷新指标</button></div>
+        <p class="hint">选择当前现场情况，系统据此出核对提示；不确定就选「正常拣选」。</p>
+        <div class="row" id="x-scenes">
+          <button class="btn" data-scene="normal">正常拣选</button>
+          <button class="btn" data-scene="similar">相似包装</button>
+          <button class="btn" data-scene="cancelled">订单已取消</button>
+          <button class="btn" data-scene="system">系统中断</button>
+          <button class="btn" data-scene="note">说明未随单</button>
+        </div>
+        <button class="btn primary" id="btn-x-scan">执行判定</button>
+        <p class="hint" id="x-error"></p>
+        <details class="adv">
+          <summary>高级字段（一般不用改）</summary>
+          <div class="form">
+            <label class="field"><span>业务编号</span><input id="x-biz" class="input" value="wv-3001"></label>
+            <label class="field"><span>SKU</span><input id="x-sku" class="input" value="SKU-A500"></label>
+            <label class="field"><span>基础编号</span><input id="x-base" class="input" value="SKU-A"></label>
+            <label class="field"><span>当前规格</span><input id="x-spec" class="input" value="500ml"></label>
+            <label class="field"><span>相邻规格</span><input id="x-neighbors" class="input" value="750ml"></label>
+            <label class="field"><span>数据截止</span><input id="x-asof" class="input" value="2026-11-19T09:00"></label>
+            <label class="field"><span>已取消</span><select id="x-cancelled"><option value="false">否</option><option value="true">是</option></select></label>
+            <label class="field"><span>系统可用</span><select id="x-available"><option value="true">是</option><option value="false">否</option></select></label>
+            <label class="field"><span>随单说明</span><input id="x-note" class="input" placeholder="留空表示无"></label>
+            <label class="field"><span>说明随单</span><select id="x-attached"><option value="true">是</option><option value="false">否</option></select></label>
+          </div>
+        </details>
+      </article>
+
+      <article class="card" id="x-result" hidden>
+        <h3>判定结果</h3>
+        <p class="lead" id="x-level"></p>
+        <ul class="list" id="x-reasons"></ul>
+        <div class="row" id="x-dispose-row">
+          <input id="x-operator" class="input" placeholder="接手人（挂起必填）">
+          <input id="x-reason" class="input" placeholder="原因（挂起必填）">
+          <input id="x-confirmed" class="input" placeholder="确认时间 2026-11-19T09:06">
+          <button class="btn primary" id="btn-x-accept">采纳</button>
+          <button class="btn" id="btn-x-override">覆盖并闭环</button>
+        </div>
+        <p class="hint" id="x-dispose-msg"></p>
+      </article>
+    </div>
+  </section>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

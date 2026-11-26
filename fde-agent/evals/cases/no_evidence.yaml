@@ -1,0 +1,17 @@
+# 负例：没有证据、编造编号、非 JSON，一律必须被拦下
+cases:
+  - id: neg-empty-id
+    text: 拣选是错发的主因。
+    model_output: '{"claims":[{"text":"拣选是主因","fact_id":""}]}'
+    expect: rejected
+    code: E_NO_EVIDENCE
+  - id: neg-fake-id
+    text: 拣选是错发的主因。
+    model_output: '{"claims":[{"text":"拣选是主因","fact_id":"f99"}]}'
+    expect: rejected
+    code: E_NO_EVIDENCE
+  - id: neg-not-json
+    text: 随便写点什么。
+    model_output: '我认为拣选是主因，但没有证据。'
+    expect: rejected
+    code: E_SCHEMA

@@ -1,0 +1,118 @@
+/* 设计令牌：与项目文档同一套中性色 + 绿色强调，避免多主题漂移 */
+:root{
+  --bg:#f6f7f8;            /* 页面底色 */
+  --surface:#ffffff;       /* 卡片底色 */
+  --muted-surface:#f0f1f3; /* 次级底色 */
+  --text:#17181a;          /* 主文本 */
+  --muted:#5b5f66;         /* 次要文本 */
+  --border:rgba(23,24,26,.12); /* 分隔线 */
+  --brand:#0ab861;         /* 主色 */
+  --brand-soft:#e5fff2;    /* 主色浅底 */
+  --brand-text:#004d26;    /* 主色深字 */
+  --danger:#e8463a;        /* 危险色 */
+  --radius:8px;            /* 常规圆角 */
+  --radius-card:12px;      /* 卡片圆角 */
+}
+*{box-sizing:border-box}    /* 统一盒模型 */
+body{margin:0;background:var(--bg);color:var(--text);
+  font:14px/1.6 "Microsoft YaHei","PingFang SC",system-ui,sans-serif} /* 基础排版 */
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh} /* 左导航 + 主区 */
+
+/* 左侧导航：固定宽度，选中项用左侧色条标记 */
+.nav{background:#12161a;color:#cfd3d8;padding:20px 16px;display:flex;flex-direction:column;gap:6px} /* 导航容器 */
+.brand{display:flex;align-items:center;gap:8px;color:#fff;font-weight:600;margin-bottom:18px;font-size:15px} /* 品牌区 */
+.dot{width:8px;height:8px;border-radius:50%;background:var(--brand)} /* 状态点 */
+.nav-item{appearance:none;border:0;background:transparent;color:#cfd3d8;text-align:left;
+  padding:9px 12px;border-radius:var(--radius);cursor:pointer;font-size:14px} /* 导航项 */
+.nav-item:hover{background:rgba(255,255,255,.06)} /* 悬停 */
+.nav-item.active{background:rgba(10,184,97,.16);color:#fff;box-shadow:inset 2px 0 0 var(--brand)} /* 选中 */
+.nav-foot{margin-top:auto;padding:12px;font-size:12px} /* 底部链接 */
+.nav-foot a{color:#8b9096;text-decoration:none}       /* 链接样式 */
+
+/* 主区与顶栏 */
+.main{padding:0 24px 40px} /* 主区内边距 */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:20px} /* 顶栏 */
+.crumbs{font-weight:600;font-size:15px} /* 当前位置 */
+.controls{display:flex;align-items:center;gap:16px} /* 右侧控件 */
+.field{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)} /* 表单字段 */
+.status{font-size:12px;color:var(--muted)}             /* 连接状态 */
+.status.ok{color:var(--brand-text)}                     /* 正常 */
+.status.err{color:var(--danger)}                        /* 异常 */
+
+/* 卡片与网格 */
+.view{display:flex;flex-direction:column;gap:16px} /* 视图容器 */
+.view.hidden{display:none}                          /* 隐藏 */
+.grid.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px} /* 指标卡 */
+.card{background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-card);padding:18px}     /* 卡片 */
+.card h3{margin:0 0 10px;font-size:15px}             /* 卡片标题 */
+.card h4{margin:14px 0 6px;font-size:13px;color:var(--muted)} /* 小节标题 */
+.metric{margin:0;font-size:24px;font-weight:600}     /* 指标数值 */
+.hint{margin:6px 0;color:var(--muted);font-size:12px} /* 提示 */
+.lead{margin:0;font-size:14px}                        /* 主结论 */
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap} /* 横排 */
+.row-actions{display:flex;gap:8px}                    /* 按钮组 */
+
+/* 按钮 */
+.btn{appearance:none;border:1px solid var(--border);background:var(--surface);
+  padding:7px 14px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text)} /* 常规按钮 */
+.btn:hover{background:var(--muted-surface)}           /* 悬停 */
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-text)} /* 主按钮 */
+.btn.danger{color:var(--danger);border-color:currentColor} /* 危险按钮 */
+.btn:disabled{opacity:.5;cursor:not-allowed}           /* 禁用 */
+
+/* 输入与分段控件 */
+.input,select,textarea{border:1px solid var(--border);border-radius:var(--radius);
+  padding:7px 10px;font-size:13px;background:var(--surface);color:var(--text);font-family:inherit} /* 输入框 */
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden} /* 分段 */
+.seg-item{appearance:none;border:0;background:transparent;padding:7px 14px;cursor:pointer;font-size:13px;color:var(--muted)} /* 分段项 */
+.seg-item.active{background:var(--brand-soft);color:var(--brand-text);font-weight:600} /* 选中 */
+
+/* 状态时间线 */
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px} /* 步骤条 */
+.step{padding:5px 10px;border-radius:999px;font-size:12px;
+  background:var(--muted-surface);color:var(--muted)}       /* 未完成 */
+.step.done{background:var(--brand-soft);color:var(--brand-text)} /* 完成 */
+.step.current{outline:2px solid var(--brand);outline-offset:1px} /* 当前 */
+
+/* 键值行与列表 */
+.kv{font-size:13px;color:var(--muted);margin:8px 0} /* 键值 */
+.list{margin:6px 0;padding-left:18px;font-size:13px} /* 列表 */
+.list li{margin:4px 0}                               /* 列表项 */
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} /* 三列 */
+.split{display:grid;grid-template-columns:260px 1fr;gap:16px;margin-top:12px} /* 左右分栏 */
+.pages{list-style:none;padding:0;margin:0} /* 页面列表 */
+.pages li{padding:8px 10px;border-radius:var(--radius);cursor:pointer;border:1px solid transparent} /* 页面项 */
+.pages li:hover{background:var(--muted-surface)} /* 悬停 */
+.pages li.active{border-color:var(--brand);background:var(--brand-soft);color:var(--brand-text)} /* 选中 */
+.detail{background:var(--muted-surface);border-radius:var(--radius);padding:14px;min-height:160px} /* 详情 */
+.detail pre{white-space:pre-wrap;font-family:inherit;margin:0;font-size:13px} /* 正文保留换行 */
+
+/* 表单与表格 */
+.form{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:10px 0} /* 表单网格 */
+.form .wide{grid-column:1/-1}                          /* 占满一行 */
+.field span{min-width:56px}                            /* 标签宽度 */
+.field .input,.field select,.field textarea{flex:1;min-width:120px} /* 输入自适应 */
+.table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px} /* 表格 */
+.table th,.table td{border-bottom:1px solid var(--border);padding:8px 6px;text-align:left} /* 单元格 */
+.table th{color:var(--muted);font-weight:600}          /* 表头 */
+.tag{display:inline-block;padding:1px 8px;border-radius:999px;background:var(--brand-soft);
+  color:var(--brand-text);font-size:11px}              /* 标签 */
+
+/* 场景按钮与高级字段折叠：一线只看到业务场景，技术字段默认收起 */
+#x-scenes{justify-content:flex-start}                    /* 场景按钮左对齐 */
+.adv{margin-top:12px;border-top:1px dashed var(--border);padding-top:8px} /* 折叠区 */
+.adv summary{cursor:pointer;font-size:12px;color:var(--muted);list-style:none} /* 摘要 */
+.adv summary::-webkit-details-marker{display:none}        /* 隐藏三角 */
+.adv summary::before{content:"▸ ";color:var(--muted)}    /* 自定义箭头 */
+.adv[open] summary::before{content:"▾ "}                 /* 展开态箭头 */
+
+/* 窄屏：导航收成顶部横向，避免布局错位 */
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}                      /* 单列 */
+  .nav{flex-direction:row;flex-wrap:wrap;align-items:center} /* 横向导航 */
+  .nav-foot{margin-left:auto}                          /* 链接靠右 */
+  .grid.cards{grid-template-columns:repeat(2,1fr)}     /* 两列指标 */
+  .cols,.form,.split{grid-template-columns:1fr}        /* 单列堆叠 */
+}

@@ -1,0 +1,20 @@
+# P0 阶段只需要 API 进程，不启动任何存储；以下服务在 P1/P2 再启用
+services:                     # 服务定义
+  qdrant:                     # 向量库，P1 知识库使用
+    image: qdrant/qdrant:latest   # 官方镜像
+    ports:                    # 端口映射
+      - "6333:6333"           # HTTP 端口
+    volumes:                  # 数据持久化
+      - ./var/qdrant:/qdrant/storage   # 本地目录挂载
+    profiles: ["p1"]          # 默认不启动，显式启用 profile
+  postgres:                   # 结构化库，P1 事实台账使用
+    image: postgres:16        # 官方镜像
+    environment:              # 连接参数由环境变量注入，禁止写死密码
+      POSTGRES_USER: ${PG_USER}       # 用户名
+      POSTGRES_PASSWORD: ${PG_PASSWORD}   # 密码
+      POSTGRES_DB: ${PG_DB}           # 数据库名
+    ports:                    # 端口映射
+      - "5432:5432"           # 默认端口
+    volumes:                  # 数据持久化
+      - ./var/pg:/var/lib/postgresql/data   # 本地目录挂载
+    profiles: ["p1"]          # 默认不启动

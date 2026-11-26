@@ -1,0 +1,38 @@
+app:                                        # 应用级配置块
+  env: dev                                  # 运行环境标识：dev / test / prod
+  api_prefix: /v1                           # 对外接口统一前缀
+  trace_dir: ./var/trace                    # 链路追踪文件目录（JSONL 追加写）
+  kb_dir: ./var/kb                          # 知识库目录（片段与索引）
+  memory_dir: ./var/memory                  # 记忆目录（JSONL）
+  wiki_dir: ./var/wiki                      # Wiki 数据目录（页面/版本/审计）
+  task_dir: ./var/tasks                     # 编排任务目录（状态与产物）
+  exec_dir: ./var/exec                      # 执行层事件流目录（扫码/判定/处置）
+  allowed_roles: [viewer, operator, engineer, safety, admin]   # 允许访问的角色白名单
+  roles_with_write: [admin]                 # 允许触发写类动作的角色（P0 仅占位，默认禁用写）
+model:                                      # 模型网关配置块
+  provider: fake                            # 当前提供方：fake（P0 自测）/ openai_compatible（P3 起）
+  base_url: ${LLM_BASE_URL}                 # 推理服务地址，只允许环境变量注入
+  api_key: ${LLM_API_KEY}                   # 访问令牌，只允许环境变量注入
+  primary: ${LLM_PRIMARY_MODEL}             # 主模型名称，只允许环境变量注入
+  fallback: fake                            # 主模型失败或超时时的降级实现
+  temperature: 0                            # 判定类任务固定为 0，保证同输入同输出
+  seed: 42                                  # 固定随机种子，便于回放
+  timeout_s: 30                             # 单次调用超时秒数
+  max_retry: 2                              # schema 不合法时的最大重试次数
+guard:                                      # 闸门配置块
+  require_fact_id: true                     # 是否强制每条结论携带事实编号
+  forbid_write_ops: true                    # 是否禁止任何写业务库的动作
+  forbid_auto_approval: true                # 是否禁止自动审批
+  fact_id_pattern: '^f[0-9]{2}$'            # 事实编号格式：f00–f99
+  min_comment_ratio: 0.95                   # 行注释覆盖率下限，供检查脚本读取
+memory:                                     # 记忆配置块
+  backend: local                            # 后端：local（默认）/ mem0（可选）
+  ttl_days: 90                              # 记忆保留天数，与审计留存一致
+trace:                                      # 追踪配置块
+  store_raw: true                           # 是否记录模型原文（回放必需；生产可按合规要求关闭）
+  max_raw_chars: 2000                       # 单条原文截断长度
+exec:                                       # 现场执行阈值
+  dedupe_minutes: 10                        # 同业务同 SKU 重复扫码去重窗口（分钟）
+  overdue_minutes: 15                       # 挂起未处置超时阈值（分钟）
+slo:                                        # 性能目标
+  p95_ms: 8000                              # 单任务 P95 上限（毫秒），压测脚本读取

@@ -1,0 +1,7 @@
+__pycache__/          # Python 字节码缓存
+*.pyc                 # 编译产物
+.venv/                # 虚拟环境
+var/                  # 运行期产物（追踪、快照、本地数据库）
+.pytest_cache/        # 测试缓存
+config.local.yaml     # 本地覆盖配置，禁止提交
+.env                  # 环境变量文件，禁止提交

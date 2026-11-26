@@ -1,0 +1,14 @@
+# 正例：模型输出合法且事实编号真实存在，应被接受
+cases:
+  - id: pos-cancel-order
+    text: 取消订单已进入波次，拣完后仍被装车，配送站到货才发现。
+    model_output: '{"claims":[{"text":"取消单仍被装车","fact_id":"f11"}]}'
+    expect: accepted
+  - id: pos-delay
+    text: 订单取消事件同步延迟 12 分钟。
+    model_output: '{"claims":[{"text":"取消事件同步延迟 12 分钟","fact_id":"f31"}]}'
+    expect: accepted
+  - id: pos-similar-sku
+    text: 相似包装 SKU 摆在相邻货位，新员工经常拿错规格。
+    model_output: '{"claims":[{"text":"相似包装导致错拿","fact_id":"f10"}]}'
+    expect: accepted

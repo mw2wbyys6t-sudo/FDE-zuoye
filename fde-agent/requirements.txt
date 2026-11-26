@@ -1,0 +1,6 @@
+fastapi==0.141.1        # Web 框架，提供接口与依赖注入
+uvicorn==0.54.0         # ASGI 服务器，本地运行入口
+pydantic==2.12.5        # 契约模型与强校验
+pyyaml==6.0.3           # 解析 config.yaml
+pytest==9.1.1           # 单元测试
+httpx==0.28.1           # TestClient 依赖，用于进程内接口测试
