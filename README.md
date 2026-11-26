@@ -125,3 +125,16 @@ python scripts/verify_p0.py          # 逐阶段验收脚本 p0…p8
 - 全部数据为合成样例，不接真实 WMS/OMS/扫码终端；`var/` 运行时目录不纳入版本库。
 - 角色通过请求头 `X-Role` 传递，仅用于演示，生产须由网关注入。
 - 现场规则（R1–R4）尚未经真实历史数据验证，回放评估台的样例结果为精确率 0.50 / 召回率 0.80，不可作为业务结论。
+
+## 静态演示包（deploy/static-demo）
+
+`deploy/static-demo/` 是控制台的静态打包脚本与浏览器内 mock 层，用于在没有 Python 运行时的环境（如静态托管）演示界面。
+
+```bash
+python deploy/static-demo/build_demo.py    # 产出 deploy/static-demo/dist/public/
+```
+
+- `mock.js` 拦截 `/v1` 请求，用内存合成数据实现概览、任务编排、Wiki 双模式、记忆审计、现场执行五组接口。
+- `build_demo.py` 复制前端资源、注入 mock 脚本与演示横幅；`dist/` 为构建产物，已加入忽略规则。
+- 已部署实例：`https://37ko78czrou73h0ul8b.traesite.cn`（仅自己可见）。
+- 边界：数据在内存中，刷新即重置；页面顶部保留"演示模式"横幅；这是演示外壳，不是系统本体，真实系统需运行 `fde-agent`。
