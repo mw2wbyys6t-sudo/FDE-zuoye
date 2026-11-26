@@ -72,3 +72,18 @@
 - 新增材料放入 `docs/`；与技术方案相关的放入 `docs/agent-system/`。
 - 修改技术方案时先改 `.md`，再重新导出 `.docx`，避免两版不一致。
 - 提交信息使用 `docs: 说明` / `docs(agent-system): 说明` 前缀。
+
+## 内容整合（2026-11-26）
+
+本仓库在原有 FDE 交付链之外，迁入了另一条独立的课程内容线，两者没有代码依赖，阅读与引用时请分别标注来源。
+
+| 内容线 | 位置 | 说明 |
+|---|---|---|
+| FDE 需求发现与智能体系统 | `docs/`、`docs/agent-system/` | 远川物流仓内拣选与装车核验场景的分析、流程图与技术方案 |
+| CANN GELU 算子课程工程 | `integrated/cann-gelu/` | 华为昇腾 Ascend C 算子实现、构建脚本、精度比对，以及第三周开源合规作业 |
+
+- 迁移说明与逐目录索引：[`integrated/README.md`](./integrated/README.md)
+- 许可证状态核对：[`integrated/LICENSE-STATUS.md`](./integrated/LICENSE-STATUS.md)
+- 完整合规报告：[`docs/license/开源许可证合规核对报告.md`](./docs/license/开源许可证合规核对报告.md) ／ [DOCX 版](./docs/license/开源许可证合规核对报告.docx)
+
+**重要声明**：迁入内容不改变上游许可证状态。上游仓库未附项目级 LICENSE，源码多处标注华为版权与 All rights reserved，`cmake/util/makeself/` 为 GPL-2.0 第三方组件。本仓库仅作课程归档，**不构成对这些代码的再许可**；对外分发前须按报告中的待办补齐授权与声明。
