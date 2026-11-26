@@ -28,21 +28,21 @@
 
 | 文件 | 内容 | 格式 |
 |---|---|---|
-| 四份可核对资料 | 客户简报、现状信息请求表、待索取记录清单、调查边界 | HTML |
-| discovery-report.md | 六角色事实台账（f00–f55）、按角色整理的证据、四来源核对、候选需求 | Markdown |
-| discovery-report.json / .csv | 结构化导出，便于二次处理 | JSON / CSV |
-| 业务挖掘报告 | 任务1 识别业务机会、任务2 建立现状基线、任务3 确认立项与决策链，含评分与改进建议 | Markdown |
-| 三任务作答（HTML） | 同上内容的可读排版版本 | HTML |
-| FDE 结论总流程图 | 现状故障链 → 证据门槛判断 → G0–G6 落地路径与验收硬线 | HTML |
-| agent-system/ | 会话提示词归档，以及两套技术方案（业务侧 + 智能体系统侧） | Markdown / DOCX |
+| [四份可核对资料](docs/%E8%BF%9C%E5%B7%9D%E7%89%A9%E6%B5%81-%E6%8B%A3%E5%AE%8C%E4%BA%86%EF%BC%8C%E5%8D%B4%E8%A3%85%E9%94%99%E4%BA%86%E8%BD%A6-%E5%9B%9B%E4%BB%BD%E5%8F%AF%E6%A0%B8%E5%AF%B9%E8%B5%84%E6%96%99.html) | 客户简报、现状信息请求表、待索取记录清单、调查边界 | HTML |
+| [discovery-report.md](docs/discovery-report.md) | 六角色事实台账（f00–f55）、按角色整理的证据、四来源核对、候选需求 | Markdown |
+| [discovery-report.json](docs/discovery-report.json) / [discovery-report.csv](docs/discovery-report.csv) | 结构化导出，便于二次处理 | JSON / CSV |
+| [业务挖掘报告](docs/%E4%BB%93%E5%86%85%E6%8B%A3%E9%80%89%E4%B8%8E%E8%A3%85%E8%BD%A6%E6%A0%B8%E9%AA%8C-%E4%B8%9A%E5%8A%A1%E6%8C%96%E6%8E%98%E6%8A%A5%E5%91%8A.md) | 任务1 识别业务机会、任务2 建立现状基线、任务3 确认立项与决策链，含评分与改进建议 | Markdown |
+| [三任务作答（HTML）](docs/%E8%BF%9C%E5%B7%9D%E7%89%A9%E6%B5%81-%E4%B8%89%E4%BB%BB%E5%8A%A1%E4%BD%9C%E7%AD%94-%E4%B8%9A%E5%8A%A1%E6%9C%BA%E4%BC%9A%C2%B7%E5%9F%BA%E7%BA%BF%C2%B7%E5%86%B3%E7%AD%96%E9%93%BE.html) | 同上内容的可读排版版本 | HTML |
+| [FDE 结论总流程图](docs/%E8%BF%9C%E5%B7%9D%E7%89%A9%E6%B5%81-FDE%E7%BB%93%E8%AE%BA%E6%80%BB%E6%B5%81%E7%A8%8B%E5%9B%BE.html) | 现状故障链 → 证据门槛判断 → G0–G6 落地路径与验收硬线 | HTML |
+| [agent-system/](docs/agent-system/README.md) | 会话提示词归档，以及两套技术方案（业务侧 + 智能体系统侧） | Markdown / DOCX |
 
 ## 阅读顺序（建议）
 
-1. `docs/远川物流-拣完了，却装错了车-四份可核对资料.html`——先看客户说了什么、要什么记录。
-2. `docs/discovery-report.md`——再看六个角色分别讲了什么，事实编号怎么来的。
-3. `docs/仓内拣选与装车核验-业务挖掘报告.md`——三任务作答与评分，能看出哪些地方被扣分、为什么。
-4. `docs/远川物流-FDE结论总流程图.html`——一张图看完结论与路径。
-5. `docs/agent-system/README.md`——若关注系统实现，从这里进入技术方案。
+1. [docs/远川物流-拣完了，却装错了车-四份可核对资料.html](docs/%E8%BF%9C%E5%B7%9D%E7%89%A9%E6%B5%81-%E6%8B%A3%E5%AE%8C%E4%BA%86%EF%BC%8C%E5%8D%B4%E8%A3%85%E9%94%99%E4%BA%86%E8%BD%A6-%E5%9B%9B%E4%BB%BD%E5%8F%AF%E6%A0%B8%E5%AF%B9%E8%B5%84%E6%96%99.html)——先看客户说了什么、要什么记录。
+2. [docs/discovery-report.md](docs/discovery-report.md)——再看六个角色分别讲了什么，事实编号怎么来的。
+3. [docs/仓内拣选与装车核验-业务挖掘报告.md](docs/%E4%BB%93%E5%86%85%E6%8B%A3%E9%80%89%E4%B8%8E%E8%A3%85%E8%BD%A6%E6%A0%B8%E9%AA%8C-%E4%B8%9A%E5%8A%A1%E6%8C%96%E6%8E%98%E6%8A%A5%E5%91%8A.md)——三任务作答与评分，能看出哪些地方被扣分、为什么。
+4. [docs/远川物流-FDE结论总流程图.html](docs/%E8%BF%9C%E5%B7%9D%E7%89%A9%E6%B5%81-FDE%E7%BB%93%E8%AE%BA%E6%80%BB%E6%B5%81%E7%A8%8B%E5%9B%BE.html)——一张图看完结论与路径。
+5. [docs/agent-system/README.md](docs/agent-system/README.md)——若关注系统实现，从这里进入技术方案。
 
 ## 核心结论（四条）
 
